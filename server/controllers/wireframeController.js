@@ -2,9 +2,12 @@
 import fs from "fs";
 import { fetchFigmaFile, extractHtmlAndCss } from "../utilities/figma/figmaExporter.js";
 
+
+
 export const convertFigmaToHtml = async (req, res) => {
   try {
-    const { fileKey } = req.body;
+    // const { fileKey } = req.body;
+    const fileKey = process.env.FIGMA_FILE_KEY;
 
     if (!fileKey) {
       return res.status(400).json({ error: "Missing required parameter: fileKey" });
