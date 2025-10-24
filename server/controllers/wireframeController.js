@@ -6,14 +6,22 @@ import { fetchFigmaFile, extractHtmlAndCss } from "../utilities/figma/figmaExpor
 
 export const convertFigmaToHtml = async (req, res) => {
   try {
-    // const { fileKey } = req.body;
-    const fileKey = process.env.FIGMA_FILE_KEY;
+    const body = req.body || {};
 
-    if (!fileKey) {
-      return res.status(400).json({ error: "Missing required parameter: fileKey" });
+    const { fileKey, accessToken } = body;
+
+    // Validate required parameters
+    if (!fileKey || !accessToken) {
+      return res.status(400).json({
+        error: "Missing required parameters",
+        missing: [
+          !fileKey ? "fileKey" : null,
+          !accessToken ? "accessToken" : null
+        ].filter(Boolean),
+      });
     }
 
-    const data = await fetchFigmaFile(fileKey);
+    const data = await fetchFigmaFile(fileKey, accessToken);
     console.log("Building HTML/CSS…");
 
     const { html, css } = await extractHtmlAndCss(data);

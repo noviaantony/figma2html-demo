@@ -1,6 +1,6 @@
-export async function fetchFigmaFile(fileKey) {
+export async function fetchFigmaFile(fileKey, accessToken) {
   console.log("Fetching Figma file JSON…");
-  return fetchJson(`https://api.figma.com/v1/files/${fileKey}`);
+  return fetchJson(`https://api.figma.com/v1/files/${fileKey}`, accessToken);
 }
 
 // --- Core export ---
@@ -128,12 +128,10 @@ const rgbFromFigmaColor = (c, opacity = 1) => {
 };
 
 // --- Fetch JSON from Figma ---
-async function fetchJson(url) {
+async function fetchJson(url, accessToken) {
   const fetch = (await import("node-fetch")).default;
 
-  const FIGMA_TOKEN = process.env.FIGMA_TOKEN;
-
-  const res = await fetch(url, { headers: { "X-Figma-Token": FIGMA_TOKEN } });
+  const res = await fetch(url, { headers: { "X-Figma-Token": accessToken } });
   if (!res.ok) throw new Error(`Figma API error ${res.status}: ${await res.text()}`);
   return res.json();
 }
