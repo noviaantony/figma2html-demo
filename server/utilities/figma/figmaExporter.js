@@ -4,7 +4,7 @@ export async function fetchFigmaFile(fileKey, accessToken) {
 }
 
 // --- Core export ---
-export async function extractHtmlAndCss(figma) {
+export async function extractHtmlAndCss(fileKey, figma) {
   const pages = figma.document?.children || [];
   
   // Collect all unique fonts used in the document
@@ -74,7 +74,7 @@ body { font-family: Inter, Arial, sans-serif; background: #fafafa; color: #111; 
     // Pre-fetch all images for this page
     const imageNodeIds = frames.flatMap(frame => collectImageNodes(frame));
     if (imageNodeIds.length > 0) {
-      await fetchImages(imageNodeIds);
+      await fetchImages(fileKey, imageNodeIds);
     }
 
     for (const frame of frames) {
@@ -138,7 +138,7 @@ async function fetchJson(url, accessToken) {
 
 // Batch fetch images
 const imageCache = new Map();
-async function fetchImages(nodeIds) {
+async function fetchImages(fileKey, nodeIds) {
   if (nodeIds.length === 0) return;
   
   const uncached = nodeIds.filter(id => !imageCache.has(id));
@@ -148,7 +148,7 @@ async function fetchImages(nodeIds) {
   const ids = uncached.join(",");
   try {
     const data = await fetchJson(
-      `https://api.figma.com/v1/images/${FILE_KEY}?ids=${encodeURIComponent(ids)}&scale=2&format=png`
+      `https://api.figma.com/v1/images/${"ss"}?ids=${encodeURIComponent(ids)}&scale=2&format=png`
     );
     for (const [id, url] of Object.entries(data.images || {})) {
       if (url) imageCache.set(id, url);
