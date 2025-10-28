@@ -236,11 +236,11 @@ async function renderNode(node, rootFrame, scale) {
     const content = node.characters || "";
     
     // Debug logging
-    console.log(`Text node: "${content.substring(0, 30)}..."`);
-    console.log(`  Font: ${node.style?.fontFamily}, Weight: ${node.style?.fontWeight}`);
-    console.log(`  PostScript: ${node.style?.fontPostScriptName}`);
-    console.log(`  Effects:`, node.effects);
-    console.log(`  Transform:`, node.relativeTransform);
+    // console.log(`Text node: "${content.substring(0, 30)}..."`);
+    // console.log(`  Font: ${node.style?.fontFamily}, Weight: ${node.style?.fontWeight}`);
+    // console.log(`  PostScript: ${node.style?.fontPostScriptName}`);
+    // console.log(`  Effects:`, node.effects);
+    // console.log(`  Transform:`, node.relativeTransform);
     
     const textStyles = getTextStyles(node, rootFrame, scale, opacity);
     
